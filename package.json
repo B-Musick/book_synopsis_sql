@@ -1,0 +1,23 @@
+{
+  "name": "book_synopsis_sql",
+  "version": "1.0.0",
+  "description": "Book app where users can add books they read and write synopsis.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/B-Musick/book_synopsis_sql.git"
+  },
+  "keywords": [
+    "books"
+  ],
+  "author": "Brendan A Musick",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/B-Musick/book_synopsis_sql/issues"
+  },
+  "homepage": "https://github.com/B-Musick/book_synopsis_sql#readme"
+}
