@@ -12,6 +12,7 @@
     <% books.forEach(book=>{ %>
         <div><%=book.title%></div>
         <div><%=book.author%></div>
+        <a href="/books/<%=book.title%>&<%=book.author%>">VIEW</a>
     <% }); %>
 </body>
 </html>

@@ -25,7 +25,7 @@ getConnection=()=>{
         host: 'localhost',
         user: 'root',
         password: "#kernal32",
-        database: 'book_syn_app'
+        database: 'books_app'
     });
 };
 
@@ -35,9 +35,9 @@ let connection = getConnection();
 connection.connect(function (err) {
     if (err) throw err;
     console.log("Connected!");
-    connection.query("CREATE DATABASE IF NOT EXISTS book_syn_app", function (err, result) {
+    connection.query("CREATE DATABASE IF NOT EXISTS books_app", function (err, result) {
         if (err) throw err;
-        console.log(result);
+        console.log("Created "+result.insertId);
     });
 });
 
@@ -47,6 +47,8 @@ connection.query(`CREATE TABLE IF NOT EXISTS books
     (
         title VARCHAR(255) DEFAULT 'title' NOT NULL ,
         author VARCHAR(255) DEFAULT 'author' NOT NULL 
+        
+        
     );`,
      (err,result)=>{
         if(err) throw err;
@@ -57,6 +59,14 @@ app.get('/',(req,res)=>{
     res.render('landing');
 });
 
+/************************** ALTER TABLE **************************************/
+// app.get('/books/addAttr',(req,res)=>{
+//     res.render('/books/addAttr');
+// });
+
+// app.post('/books/', (req, res) => {
+//     res.render('/books/addAttr');
+// });
 
 /*************************** SELECT ******************************************/
 makeSelectQuery = (queryString, queryVariables, res, connection, route) => {
@@ -91,12 +101,42 @@ app.get('/books', (req, res) => {
     
 });
 
+app.get('/books/:title&:author',(req,res)=>{
+    // Get the show page for the book
+    let title = req.params.title;
+    let author = req.params.author;
+
+    const queryString = "SELECT * FROM books WHERE title LIKE ? AND author LIKE ?";
+    
+    let queryVariables = [title,author];
+
+    // Query the Database
+    connection.query(queryString, queryVariables, (err, rows, fields) => {
+        if (err) {
+            console.log('failed to query book' + err)
+            res.sendStatus(500);
+            // throw err (can do this istead)
+            res.end()
+            return
+        }
+        // Rename the values from SQL for JSON   
+        console.log(rows);
+
+        res.render('books/show', {author,title});
+        
+    })
+    
+
+});
+
 /*************************** INSERT ******************************************/
 app.get('/books/create',(req,res)=>res.render('books/create'));
 
 app.post('/books', (req,res)=>{
     let title = req.body.title;
     let author = req.body.author;
+    // let id      = req.body.id;
+    console.log(req.body);
 
     let queryString = 'INSERT INTO books (title, author) VALUES (?,?)';
     connection.query(queryString, [title,author],(err,results,fields)=>{
