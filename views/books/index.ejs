@@ -1,18 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Books</title>
-</head>
-<body>
-    <div>BOOKS PAGE</div>
-    <a href="/books/create">CREATE</a>
-    <% books.forEach(book=>{ %>
-        <div><%=book.title%></div>
-        <div><%=book.author%></div>
-        <a href="/books/<%=book.title%>&<%=book.author%>">VIEW</a>
-    <% }); %>
-</body>
-</html>
+<% include ../partials/header %>
+    <div id="books-grid-container">
+        <div id="i-books-left-column">
+            <nav id="i-books-left-column-nav">
+                <ul>
+                    <a href="/books/create"><div class="i-books-left-column-nav-div">CREATE</div></a>
+                    <a href="/books/create"><div class="i-books-left-column-nav-div">CREATE</div></a>
+
+                </ul>
+                
+            </nav>
+        </div>
+        
+        <div id="i-books-container">
+            <% books.forEach(book=>{ %>               
+                <a href="/books/<%=book.title%>&<%=book.author%>" class="i-individual-book-container">                   
+                    <img src="<%=book.image%>" class="i-book-image">
+                    <div class="i-book-title"><%=book.title%></div>
+                    <div class="i-book-author"><%=book.author%></div>
+                </a>               
+            <% }); %>
+        </div>
+    </div>
+<% include ../partials/footer %>

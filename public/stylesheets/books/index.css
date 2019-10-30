@@ -1,0 +1,102 @@
+body{
+    width: 100vw;
+    height: 100vh;
+ 
+}
+#books-grid-container{
+    display: grid;
+    grid-template-columns: 15% 85%;
+    width: 100%;
+    height: 100%;
+}
+#i-books-left-column{
+    grid-column: 1/2;
+    height: 100%;
+    width: 100%;
+    background-color: brown;
+    border: 2px solid rgb(70, 18, 18);
+}
+#i-books-left-column-nav{
+    height: 100%;
+    width: 100%;
+    
+}
+
+#i-books-left-column-nav a{
+    color: rgb(70, 18, 18);
+    height: 100%;
+    width: 100%;
+    text-decoration: none;
+
+
+    
+}
+#i-books-left-column-nav ul{
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    text-decoration: none;
+    width: 100%;
+  
+    margin: 0;
+   
+}
+
+.i-books-left-column-nav-div{
+    border-bottom: 2px solid rgb(70, 18, 18);
+    padding: 5px;
+    padding-left: 15px;
+    padding-top: 10px;
+    width: 90%;
+    height: 100%;
+}
+
+.i-books-left-column-nav-div:hover{
+    
+    background-color: blanchedalmond;
+    border: 2px solid rgb(70, 18, 18);
+    border-left: 0;
+    border-top: 0;
+    padding-right: 3px;
+    margin: 0;
+
+}
+#i-books-container{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    grid-column: 2/3;
+
+    
+}
+
+.i-individual-book-container{
+    font-family: 'Liu Jian Mao Cao', cursive;
+    margin: 20px;
+    background-color: brown;
+    border: 5px solid rgb(70, 18, 18);
+    border-radius: 10px;
+    width: 160px;
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    text-decoration: none;
+    color: blanchedalmond;
+
+}
+.i-book-title{
+    width: 100%;
+    padding: 5px;
+
+}
+.i-book-author{
+    width: 100%;
+
+}
+.i-book-image{
+    width: 80px;
+    height: auto;
+}

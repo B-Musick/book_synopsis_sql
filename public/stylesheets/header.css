@@ -1,0 +1,72 @@
+body{
+    margin: 0;
+    padding: 0;
+    background-color: beige;
+
+}
+#title-header{
+    display: flex;
+    justify-content: center;
+   
+
+}
+#title-header-background{
+    z-index: 1000;
+    height: 100px;
+    width: 100vw;
+    opacity: 0.5;
+    /* font-size: 20px; */
+    background-image: url('https://images.unsplash.com/photo-1526721940322-10fb6e3ae94a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1051&q=80');
+    background-size:cover;
+    background-repeat:   no-repeat;
+    background-position: center center;
+}
+
+#header-word-title{
+    font-family: 'Liu Jian Mao Cao', cursive;    
+    font-weight: 600;
+    opacity: 1 !important;
+    top: 22px;
+    font-size: 50px;
+    text-align: center;
+    position: absolute;
+    z-index: 1;
+    text-align: center;   
+}
+#navigation-bar{
+    height: 40px;
+    display: flex;
+    justify-content: space-evenly;
+    background-color: rgb(48, 95, 152);
+    color: white;
+    align-content: center;
+}
+
+#navigation-bar a{
+    
+    
+    margin-left: 20px;
+    margin: 0;
+    
+    padding:10px 10vw;
+}
+
+a:hover{
+
+}
+#navigation-bar a{
+    text-decoration: none;
+    color: white;
+    
+}
+.nav-link{
+    margin: 0;
+    padding: 0;
+    
+}
+a:hover{
+    background-color:  rgb(63, 119, 188);
+    
+    color: white;
+
+}
