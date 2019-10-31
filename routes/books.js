@@ -82,7 +82,9 @@ router.get('/:title&:author', (req, res) => {
     let author = req.params.author;
 
 
-    const queryString = "SELECT * FROM books WHERE title LIKE ? AND author LIKE ?";
+    // Join in the values from synopsis table so we can print previews of them in the Books show page then the 
+    // user can access them from there
+    const queryString = "SELECT * FROM books JOIN synopsis ON books.title LIKE synopsis.book_title WHERE title LIKE ? AND author LIKE ?";
 
     let queryVariables = [title, author];
 
@@ -98,14 +100,20 @@ router.get('/:title&:author', (req, res) => {
         // Rename the values from SQL for JSON   
         // console.log(rows);
         let book = rows.map(book => {
+            // Contains multiple instances of the same book with each synopsis
+            console.log(book);
             if (book.title === title) {
 
                 return book;
             }
         });
-        let image = book[0].Image;
 
-        res.render('books/show', { author, title, image });
+        book;
+        
+
+        // Need to access book[0] to get the title, author, image
+        // Then to access synopsis, need to book.forEach and take the synopsis values
+        res.render('books/show', { book });
 
     })
 
@@ -116,10 +124,10 @@ router.get('/:title&:author', (req, res) => {
 router.get('/create', (req, res) => res.render('books/create'));
 
 router.post('/', (req, res) => {
+    // Get the information submitted by the user from the form
     let title = req.body.title;
     let author = req.body.author;
     let image = req.body.image;
-    console.log(req.body);
 
     let queryString = 'INSERT INTO books (title, author,image) VALUES (?,?,?)';
     connection.query(queryString, [title, author, image], (err, results, fields) => {

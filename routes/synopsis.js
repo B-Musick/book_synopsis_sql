@@ -49,7 +49,7 @@ connection.query(`CREATE TABLE IF NOT EXISTS synopsis
 // });
 /*************************** SELECT ******************************************/
 router.get('/',(req,res)=>{
-    let queryString = 'SELECT * FROM synopsis';
+    let queryString = 'SELECT DISTINCT book_author,book_title FROM synopsis';
 
     connection.query(queryString, (err, rows, fields)=>{
         if(err){
