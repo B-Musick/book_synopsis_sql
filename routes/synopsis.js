@@ -62,12 +62,33 @@ router.get('/',(req,res)=>{
         
         let books = rows;
         res.render('synopsis/index', {books});
-        // let synopsis = rows.map(syn=>{
-
-        // })
-        
-
     })
+});
+
+router.get('/:title&:author',(req,res)=>{
+    let title = req.params.title;
+    let author = req.params.author;
+
+    let queryString = 'SELECT * FROM synopsis WHERE book_author LIKE ? AND book_title LIKE ?';
+
+    connection.query(queryString,[author, title], (err, rows, fields)=>{
+        if(err){
+            console.log('failed to query synopsis' + err)
+            res.sendStatus(500);
+            // throw err (can do this istead)
+            res.end();
+            return
+        }
+
+        console.log(rows[0].synopsis_author)
+        let synopsis = rows.map(syn=>{
+            if(syn.book_title===title && syn.book_author===author){
+                return syn;
+            }
+        });
+
+        res.render('synopsis/show', {synopsis});
+    });
 });
 /*************************** INSERT ******************************************/
 router.get('/create', (req, res) => res.render('synopsis/create'));

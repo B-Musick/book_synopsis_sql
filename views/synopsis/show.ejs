@@ -4,15 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Synopsis</title>
 </head>
 <body>
-    <a href="/synopsis/create">Create</a>
     <div>
-        <%books.forEach(book=>{%>
-            <div><%=book.book_title%></div>
-            <a href="/synopsis/<%=book.book_title%>&<%=book.book_author%>">See Synopsis</a>
+            <div>BOOK</div>
+
+        <%synopsis.forEach(syn=>{%>
+            <div>BOOK</div>
+            <div><%=syn.book_title%></div>
+            <div><%=syn.synopsis_author%></div>
+
         <%});%>
-</div>
+    </div>
+    
 </body>
 </html>
