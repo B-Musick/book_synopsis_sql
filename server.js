@@ -5,7 +5,9 @@ let express = require('express'),
     morgan = require('morgan')
     dotenv = require('dotenv')
     methodOverride = require('method-override')
-    connection = require('./routes/dbconnection');
+    connection = require('./routes/dbconnection')
+    passport    = require('passport')
+    LocalStrategy = require('passport-local').Strategy;
 
 // ROUTES
 let bookRoutes = require('./routes/books');
@@ -17,7 +19,8 @@ dotenv.config();
 // App server is now serving all the files in this folder, just use root
 app.use(express.static('./public')); 
 
-app.use(morgan('short'));
+// Log requests to the console
+app.use(morgan('dev'));
 
 // Middleware to help process requests, it can go in POST request and retrieve data
 app.use(bodyParser.urlencoded({ extended: false }));
