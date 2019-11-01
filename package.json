@@ -4,7 +4,7 @@
   "description": "Book app where users can add books they read and write synopsis.",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha",
     "start": "node server.js"
   },
   "repository": {
@@ -22,11 +22,21 @@
   "homepage": "https://github.com/B-Musick/book_synopsis_sql#readme",
   "dependencies": {
     "body-parser": "^1.19.0",
+    "chai": "^4.2.0",
+    "chai-http": "^4.3.0",
     "dotenv": "^8.2.0",
     "ejs": "^2.7.1",
     "express": "^4.17.1",
+    "express-session": "^1.17.0",
     "method-override": "^3.0.0",
+    "mocha": "^6.2.2",
     "morgan": "^1.9.1",
-    "mysql": "^2.17.1"
+    "mysql": "^2.17.1",
+    "request": "^2.88.0"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "chai-http": "^2.0.1",
+    "mocha": "^2.4.5"
   }
 }

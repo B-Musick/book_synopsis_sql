@@ -1,7 +1,9 @@
 let express = require('express');
     router  = express.Router()
     mysql = require('mysql')
-    connection = require('./dbconnection');
+    connection = require('./dbconnection')
+    session = require('express-session')
+    middleware = require('../middleware/index');
 
 /*************************** CREATE TABLE ************************************/
 
@@ -22,6 +24,11 @@ router.get('/addAttr', (req, res) => {
     res.render('books/addAttr');
 });
 
+//     // The values in the brackets are inserted into the query string (?,?)
+// connection.query("ALTER TABLE `books` ADD `username` varchar(100) NOT NULL;", (err, results) => {
+//         if(err) throw err;
+//         console.log('Altered book')
+//     });
 router.post('/addAttr', (req, res) => {
     let column = req.body.column;
     let dataType = req.body.dataType;
@@ -43,7 +50,7 @@ router.post('/addAttr', (req, res) => {
 });
 
 /*************************** SELECT ******************************************/
-makeSelectQuery = (queryString, queryVariables, res, connection, route) => {
+makeSelectQuery = (queryString, queryVariables, res, connection, route,req) => {
 
     // Query the Database
     connection.query(queryString, queryVariables, (err, rows, fields) => {
@@ -60,8 +67,13 @@ makeSelectQuery = (queryString, queryVariables, res, connection, route) => {
             return { title: row.title, author: row.author, image: row.Image }
         });
 
-
-        res.render(route, { books });
+        // if(req.session.loggedin){
+        //     console.log('logged in');
+            res.render(route, { books });
+        // }else{
+        //     res.send('Log in')
+        // }
+        
     })
 }; // makeSelectQuery()
 
@@ -72,7 +84,7 @@ router.get('/', (req, res) => {
     let renderType = 'render';
     let queryVariables = [];
     let route = 'books/index';
-    makeSelectQuery(queryString, queryVariables, res, connection, route);
+    makeSelectQuery(queryString, queryVariables, res, connection, route,req);
 
 });
 
@@ -84,7 +96,7 @@ router.get('/:title&:author', (req, res) => {
 
     // Join in the values from synopsis table so we can print previews of them in the Books show page then the 
     // user can access them from there
-    const queryString = "SELECT * FROM books JOIN synopsis ON books.title LIKE synopsis.book_title WHERE title LIKE ? AND author LIKE ?";
+    const queryString = "SELECT * FROM books LEFT JOIN synopsis ON books.title LIKE synopsis.book_title WHERE title LIKE ? AND author LIKE ?";
 
     let queryVariables = [title, author];
 
@@ -101,16 +113,14 @@ router.get('/:title&:author', (req, res) => {
         // console.log(rows);
         let book = rows.map(book => {
             // Contains multiple instances of the same book with each synopsis
-            console.log(book);
+            
             if (book.title === title) {
-
                 return book;
             }
         });
 
-        book;
+        console.log(book);
         
-
         // Need to access book[0] to get the title, author, image
         // Then to access synopsis, need to book.forEach and take the synopsis values
         res.render('books/show', { book });
@@ -121,16 +131,18 @@ router.get('/:title&:author', (req, res) => {
 });
 
 /*************************** INSERT ******************************************/
-router.get('/create', (req, res) => res.render('books/create'));
+router.get('/create',  (req, res) => res.render('books/create'));
 
 router.post('/', (req, res) => {
     // Get the information submitted by the user from the form
     let title = req.body.title;
     let author = req.body.author;
     let image = req.body.image;
-
-    let queryString = 'INSERT INTO books (title, author,image) VALUES (?,?,?)';
-    connection.query(queryString, [title, author, image], (err, results, fields) => {
+    // Take current session username and set it as
+    let username = req.session.username;
+    
+    let queryString = 'INSERT INTO books (title, author,image,username) VALUES (?,?,?,?)';
+    connection.query(queryString, [title, author, image,username], (err, results, fields) => {
         if (err) {
             console.log('Failed to input new book.');
             res.sendStatus(500);
@@ -144,7 +156,7 @@ router.post('/', (req, res) => {
 /**************************** UPDATE ****************************************/
 
 // LOAD EDIT PAGE FOR UPDATE ROUTE
-router.get('/:title&:author/update', (req, res) => {
+router.get('/:title&:author/update', middleware.isSuperUser, (req, res) => {
     let title = req.params.title;
     let author = req.params.author;
 
@@ -162,9 +174,10 @@ router.get('/:title&:author/update', (req, res) => {
                 return book;
             }
         });
+        console.log(book[0].author);
 
         // rows returns [{user}] so need to take it out of the array
-        res.render('books/update', { book: rows[0] });
+        res.render('books/update', { book: book[0] });
     });
 });
 
@@ -193,7 +206,7 @@ router.put('/:title&:author', (req, res) => {
 /**************************** DELETE ****************************************/
 
 // DELETE ROUTE
-router.delete('/:title&:author', (req, res) => {
+router.delete('/:title&:author', middleware.isSuperUser, (req, res) => {
 
     let title = req.params.title;
     let author = req.params.author;
@@ -210,5 +223,15 @@ router.delete('/:title&:author', (req, res) => {
         res.redirect('/books');
     })
 });
+
+// // route middleware to make sure
+// function isLoggedIn(req, res, next) {
+
+//     // if user is authenticated in the session, carry on
+//     if (req.session.loggedin) return next();
+
+//     // if they aren't redirect them to the home page
+//     res.redirect('/');
+// }
 
 module.exports = router;

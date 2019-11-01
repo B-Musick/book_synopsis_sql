@@ -5,13 +5,20 @@ let express = require('express'),
     morgan = require('morgan')
     dotenv = require('dotenv')
     methodOverride = require('method-override')
+    session = require('express-session')
+    path = require('path')
     connection = require('./routes/dbconnection')
-    passport    = require('passport')
-    LocalStrategy = require('passport-local').Strategy;
+    ;
+    // runner = require('./test-runner')
+    
+    
+    // passport    = require('passport')
+    // LocalStrategy = require('passport-local').Strategy;
 
 // ROUTES
 let bookRoutes = require('./routes/books');
 let synopsisRoutes = require('./routes/synopsis');
+let loginRoutes     = require('./routes/login');
 
 // Set up the .env file to access through process.env.VALUE
 dotenv.config();
@@ -24,6 +31,13 @@ app.use(morgan('dev'));
 
 // Middleware to help process requests, it can go in POST request and retrieve data
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
+app.use(session({
+    secret: process.env.SESSION_SECRET,
+    resave: true,
+    saveUninitialized: true
+}));
 
 // Sets the extension 
 app.set('view engine', 'ejs');
@@ -31,9 +45,12 @@ app.set('view engine', 'ejs');
 // METHOD-OVERRIDE (PUT form action) ?_method=PUT
 app.use(methodOverride('_method'));
 
+
 // USE ROUTES
 app.use('/books', bookRoutes);
 app.use('/synopsis', synopsisRoutes);
+app.use('/', loginRoutes)
+
 
 
 // /************************** CREATE DATABASE  *********************************/
@@ -54,3 +71,6 @@ app.get('/', (req, res) => res.render('landing'));
 /***************************** START SERVER **********************************/
 
 app.listen(process.env.PORT,()=>console.log(`Server is running and listening on ${process.env.PORT}...`));
+
+module.exports = app;
+
