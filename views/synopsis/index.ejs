@@ -2,8 +2,13 @@
 
     <a href="/synopsis/create">Create</a>
     <div>
+        <div>
+            <h3>RECENT SYNOPSES</h3>
+        </div>
         <%books.forEach(book=>{%>
             <div><%=book.book_title%></div>
+            <div><%=book.book_author%></div>
+
             <a href="/synopsis/<%=book.book_title%>&<%=book.book_author%>">See Synopsis</a>
         <%});%>
 </div>

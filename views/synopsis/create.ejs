@@ -7,12 +7,24 @@
     <title>Document</title>
 </head>
 <body>
-    <form action="/synopsis" method="POST">
-        <input type="text" name="book_title" id="book_title" placeholder="Book Title">
-        <input type="text" name="book_author" id="book_author" placeholder="Book Author">
-        <input type="text" name="synopsis_author" id="synopsis_author" placeholder="Synopsis Author">
-        <textarea name="synopsis_text" id="synopsis_text" placeholder="Synopsis"></textarea>
-        <button>Submit</button>
-    </form>
+    <%if(title && author){%>
+        <!-- If create synopsis from author and book -->
+        <form action="/synopsis/<%=title%>&<%=author%>" method="POST">
+            <input type="text" name="book_title" id="book_title" value="<%=title%>" readonly>
+            <input type="text" name="book_author" id="book_author" value="<%=author%>" readonly>
+            <input type="text" name="synopsis_author" id="synopsis_author" value="<%=synopsis_author%>" readonly>
+            <textarea name="synopsis_text" id="synopsis_text" placeholder="Synopsis"></textarea>
+            <button>Submit</button>
+        </form>
+    <%}else{%>
+        <form action="/synopsis" method="POST">
+            <input type="text" name="book_title" id="book_title" placeholder="Book Title">
+            <input type="text" name="book_author" id="book_author" placeholder="Book Author">
+            <input type="text" name="synopsis_author" id="synopsis_author" placeholder="Synopsis Author">
+            <textarea name="synopsis_text" id="synopsis_text" placeholder="Synopsis"></textarea>
+            <button>Submit</button>
+        </form>
+    <%}%>
+    
 </body>
 </html>

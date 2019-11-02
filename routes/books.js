@@ -2,8 +2,9 @@ let express = require('express');
     router  = express.Router()
     mysql = require('mysql')
     connection = require('./dbconnection')
+    middleware = require('../middleware')
     session = require('express-session')
-    middleware = require('../middleware/index');
+    ;
 
 /*************************** CREATE TABLE ************************************/
 
@@ -93,7 +94,6 @@ router.get('/:title&:author', (req, res) => {
     let title = req.params.title;
     let author = req.params.author;
 
-
     // Join in the values from synopsis table so we can print previews of them in the Books show page then the 
     // user can access them from there
     const queryString = "SELECT * FROM books LEFT JOIN synopsis ON books.title LIKE synopsis.book_title WHERE title LIKE ? AND author LIKE ?";
@@ -131,7 +131,7 @@ router.get('/:title&:author', (req, res) => {
 });
 
 /*************************** INSERT ******************************************/
-router.get('/create',  (req, res) => res.render('books/create'));
+router.get('/create',  middleware.isLoggedIn, (req, res) => res.render('books/create'));
 
 router.post('/', (req, res) => {
     // Get the information submitted by the user from the form
@@ -139,9 +139,10 @@ router.post('/', (req, res) => {
     let author = req.body.author;
     let image = req.body.image;
     // Take current session username and set it as
-    let username = req.session.username;
     
-    let queryString = 'INSERT INTO books (title, author,image,username) VALUES (?,?,?,?)';
+    let username = 'brendanmusick';
+    
+    let queryString = 'INSERT INTO books (title, author,image, username) VALUES (?,?,?,?)';
     connection.query(queryString, [title, author, image,username], (err, results, fields) => {
         if (err) {
             console.log('Failed to input new book.');

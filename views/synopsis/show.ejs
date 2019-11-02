@@ -2,13 +2,18 @@
 
     <div>
             <div>BOOK</div>
-
+        <div><%=synopsis[0].book_title%></div>
+        <div><%=synopsis[0].synopsis_author%></div>
         <%synopsis.forEach(syn=>{%>
-            <div>BOOK</div>
-            <div><%=syn.book_title%></div>
-            <div><%=syn.synopsis_author%></div>
+            
+           
+            <div><%=syn.synopsis_text%></div>
+
 
         <%});%>
+        <!-- Links to the form where author and title are automatic values -->
+        <a href="/synopsis/<%=synopsis[0].book_title%>&<%=synopsis[0].book_author%>/create">Write A Synopsis</a>
+
     </div>
     
 </body>

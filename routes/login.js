@@ -30,6 +30,7 @@ connection.query(`CREATE TABLE IF NOT EXISTS login
 router.get('/login',(req,res)=>{
     res.render('login')
 })
+
 router.post('/authorize', (req,res)=>{
     var username = req.body.username;
     let password = req.body.password;

@@ -1,7 +1,10 @@
 let express = require('express');
     router = express.Router()
     mysql = require('mysql')
-    connection = require('./dbconnection');
+    connection = require('./dbconnection')
+    session = require('express-session')
+    middleware = require('../middleware')
+    ;
 
 /*************************** CREATE TABLE ************************************/
 
@@ -18,10 +21,6 @@ connection.query(`CREATE TABLE IF NOT EXISTS synopsis
         if (err) throw err;
         console.log('Created synopsis table');
     });
-
-
-
-
 
 // /************************** ALTER TABLE **************************************/
 // router.get('/addAttr', (req, res) => {
@@ -47,11 +46,14 @@ connection.query(`CREATE TABLE IF NOT EXISTS synopsis
 //         res.redirect('/books');
 //     });
 // });
+
 /*************************** SELECT ******************************************/
 router.get('/',(req,res)=>{
-    let queryString = 'SELECT DISTINCT book_author,book_title FROM synopsis';
+    // Get the books author and title
+    let queryString = 'SELECT book_author,book_title FROM synopsis';
 
     connection.query(queryString, (err, rows, fields)=>{
+        // Query the database by the book_author and book_title
         if(err){
             console.log('failed to query synopsis' + err)
             res.sendStatus(500);
@@ -60,6 +62,7 @@ router.get('/',(req,res)=>{
             return
         }
         
+        // Pass the synopsis for this specific author
         let books = rows;
         res.render('synopsis/index', {books});
     })
@@ -93,6 +96,7 @@ router.get('/:title&:author',(req,res)=>{
 /*************************** INSERT ******************************************/
 router.get('/create', (req, res) => res.render('synopsis/create'));
 
+/**** CREATE IF AUTHOR UNKNOWN *****/
 router.post('/', (req, res) => {
     let title = req.body.book_title;
     let author = req.body.book_author
@@ -111,6 +115,30 @@ router.post('/', (req, res) => {
         }
         console.log('Inserted a new synopsis ' + results.insertId);
         res.redirect('/synopsis');
+    })
+});
+
+router.get('/:title&:author/create', middleware.isLoggedIn, (req, res) => res.render('synopsis/create',{title:req.params.title,author:req.params.author, synopsis_author:req.session.username}));
+
+/**** CREATE IF AUTHOR KNOWN ****
+ * Access from /books route
+ * Will automatically fill author and title
+*/
+router.post('/:title&:author', (req, res) => {
+    let title = req.params.title;
+    let author = req.params.author;
+    let synopsis_author = req.body.synopsis_author;
+    let synopsis_text = req.body.synopsis_text;
+
+    let queryString = 'INSERT INTO synopsis (book_title,book_author, synopsis_author, synopsis_text, submit_date) VALUES (?,?,?,?,CURRENT_TIMESTAMP)';
+    connection.query(queryString, [title, author, synopsis_author, synopsis_text], (err, results, fields) => {
+        if (err) {
+            console.log('Failed to input new synopsis.' + err);
+            res.sendStatus(500);
+            return
+        }
+        console.log('Inserted a new synopsis ' + results.insertId);
+        res.redirect(`/synopsis/${title}&${author}`);
     })
 });
 
