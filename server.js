@@ -7,14 +7,8 @@ let express = require('express'),
     methodOverride = require('method-override')
     session = require('express-session')
     path = require('path')
-    connection = require('./routes/dbconnection')
+    connection = require('./routes/dbconnection');
 
-    ;
-    // runner = require('./test-runner')
-    
-    
-    // passport    = require('passport')
-    // LocalStrategy = require('passport-local').Strategy;
 
 // ROUTES
 let bookRoutes = require('./routes/books');
@@ -53,7 +47,6 @@ app.use('/synopsis', synopsisRoutes);
 app.use('/', loginRoutes)
 
 
-
 // /************************** CREATE DATABASE  *********************************/
 // connection.connect(function (err) {
 //     if (err) throw err;
@@ -67,7 +60,6 @@ app.use('/', loginRoutes)
 /***************************** LANDING PAGE **********************************/
 
 app.get('/', (req, res) => res.render('landing'));
-
 
 /***************************** START SERVER **********************************/
 

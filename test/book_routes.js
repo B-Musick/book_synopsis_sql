@@ -131,3 +131,7 @@ describe("Book Synopsis Server", function () {
 
 });
 
+/******* HOW TO RUN
+ * mocha
+ * node test
+ */

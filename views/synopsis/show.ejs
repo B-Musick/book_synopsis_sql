@@ -1,18 +1,37 @@
 <% include ../partials/header %>
 
-    <div>
-            <div>BOOK</div>
-        <div><%=synopsis[0].book_title%></div>
-        <div><%=synopsis[0].synopsis_author%></div>
-        <%synopsis.forEach(syn=>{%>
-            
-           
-            <div><%=syn.synopsis_text%></div>
-
-
-        <%});%>
+    <div id="synopsis-body">
+        <div id="synopsis-title-container">
+            <img id="synopsis-book-image" src="<%=synopsis[0].Image%>" alt="">
+            <div id="synopsis-title">
+                <h2><%=synopsis[0].book_title%></h2>
+                <h2><%=synopsis[0].book_author%></h2>
+            </div>
+        </div>
         <!-- Links to the form where author and title are automatic values -->
-        <a href="/synopsis/<%=synopsis[0].book_title%>&<%=synopsis[0].book_author%>/create">Write A Synopsis</a>
+        <!-- <a href="/synopsis/<%=synopsis[0].book_title%>&<%=synopsis[0].book_author%>/create">Write A Synopsis</a> -->
+
+        <div id="synopsis-previews-nav-container">
+            <div id="synopsis-preview-left-column">
+                <% include ../partials/sidebar %>
+            </div>
+            <div id="synopsis-previews-container">
+                <%synopsis.forEach(syn=>{%>
+                <div id="synopsis-preview">
+                    <div id="synopsis-preview-user-icon">
+                        <div>
+                            <%=syn.synopsis_author%>
+                        </div>
+                    </div>
+                    <div id="synopsis-preview-text">
+                        <div><%=syn.synopsis_text.substring(0,300)%></div>
+                    </div>
+                </div>
+
+                <%});%>
+            </div>
+            
+        </div>
 
     </div>
     

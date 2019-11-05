@@ -1,0 +1,50 @@
+#i-books-left-column{
+    
+    height: 100%;
+    width: 180px;
+    background-color: brown;
+    border: 1px solid rgb(70, 18, 18);
+    border-top: none;
+    border-left: none;
+}
+#i-books-left-column-nav{
+    height: 100%;
+    
+    
+}
+
+#i-books-left-column-nav a{
+    color: rgb(70, 18, 18);
+    height: 100%;
+    width: 100%;
+    text-decoration: none;    
+}
+#i-books-left-column-nav ul{
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    text-decoration: none;
+    width: 100%;
+    margin: 0;
+   
+}
+
+.i-books-left-column-nav-div{
+    border-bottom: 1px solid rgb(70, 18, 18);
+    padding: 5px;
+    padding-left: 15px;
+    padding-top: 10px;
+    width: 89%;
+    height: 100%;
+}
+
+.i-books-left-column-nav-div:hover{
+    
+    background-color: blanchedalmond;
+    border: 2px solid rgb(70, 18, 18);
+    border-left: 0;
+    border-top: 0;
+    padding-right: 3px;
+    margin: 0;
+
+}

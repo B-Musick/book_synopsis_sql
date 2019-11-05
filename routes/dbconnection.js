@@ -12,5 +12,4 @@ getConnection = () => {
 
 let connection = getConnection();
 
-
 module.exports = connection;

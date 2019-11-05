@@ -1,15 +1,7 @@
 <% include ../partials/header %>
     <div id="books-grid-container">
-        <div id="i-books-left-column">
-            <nav id="i-books-left-column-nav">
-                <ul>
-                    <a href="/books/create"><div class="i-books-left-column-nav-div">CREATE</div></a>
-                    <a href="/books/create"><div class="i-books-left-column-nav-div">CREATE</div></a>
-
-                </ul>
-                
-            </nav>
-        </div>
+        
+        <% include ../partials/sidebar %>
         
         <div id="i-books-container">
             <% books.forEach(book=>{ %>               

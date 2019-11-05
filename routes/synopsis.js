@@ -4,86 +4,49 @@ let express = require('express');
     connection = require('./dbconnection')
     session = require('express-session')
     middleware = require('../middleware')
-    ;
+    dotenv = require('dotenv');
+
+// Set up the .env file to access through process.env.VALUE
+dotenv.config();
+
+errMessage = (string, err) => {
+    console.log(string + err);
+    res.sendStatus(500);
+    res.end();
+    return
+}
 
 /*************************** CREATE TABLE ************************************/
 
-connection.query(`CREATE TABLE IF NOT EXISTS synopsis
-    (
-        book_title VARCHAR(255) DEFAULT 'title' NOT NULL ,
-        book_author VARCHAR(255) DEFAULT 'author' NOT NULL,
-        synopsis_author VARCHAR(255) DEFAULT 'syn_author' NOT NULL,
-        synopsis_text TEXT NOT NULL,
-        submit_date DATE NOT NULL
-    
-    );`,
-    (err, result) => {
-        if (err) throw err;
-        console.log('Created synopsis table');
+// connection.query(process.env.CREATE_SYNOPSIS_TABLE,
+//     (err, result) => {if (err) throw err; console.log('Created synopsis table');});
+
+/************************** ALTER TABLE **************************************/
+
+/*
+// The values in the brackets are inserted into the query string (?,?)
+    connection.query(process.env.ALTER_SYNOPSIS_TABLE, [], (err, results, fields) => {
+        if (err) errMessage('Failed to alter books table ', err)
+        console.log('Updated books table ' + results);
+        res.redirect('/books');
     });
+});
+*/
 
-// /************************** ALTER TABLE **************************************/
-// router.get('/addAttr', (req, res) => {
-//     res.render('books/addAttr');
-// });
+/*************************** SELECT ******************************************
+******************************************************************************/
 
-// router.post('/addAttr', (req, res) => {
-//     let column = req.body.column;
-//     let dataType = req.body.dataType;
-//     let constraint = req.body.constraint;
-//     let defaultVal = req.body.defaultVal;
-
-
-//     let queryString = `ALTER TABLE books ADD ${column} ${dataType};`;
-//     // The values in the brackets are inserted into the query string (?,?)
-//     connection.query(queryString, [], (err, results, fields) => {
-//         if (err) {
-//             console.log('Failed to alter books table ' + err);
-//             res.sendStatus(500);
-//             return
-//         }
-//         console.log('Updated books table ' + results);
-//         res.redirect('/books');
-//     });
-// });
-
-/*************************** SELECT ******************************************/
-router.get('/',(req,res)=>{
-    // Get the books author and title
-    let queryString = 'SELECT book_author,book_title FROM synopsis';
-
-    connection.query(queryString, (err, rows, fields)=>{
-        // Query the database by the book_author and book_title
-        if(err){
-            console.log('failed to query synopsis' + err)
-            res.sendStatus(500);
-            // throw err (can do this istead)
-            res.end();
-            return
-        }
-        
-        // Pass the synopsis for this specific author
-        let books = rows;
-        res.render('synopsis/index', {books});
-    })
+router.get('/',(req,res)=>{ connection.query(process.env.SELECT_SYN_BOOK, (err, rows, fields)=>{
+        // Query the database by the book_author and book_title. Pass the synopsis for this specific author
+        if (err) errMessage('failed to query synopsis', err); res.render('synopsis/index', {books:rows});})
 });
 
 router.get('/:title&:author',(req,res)=>{
-    let title = req.params.title;
-    let author = req.params.author;
+    let title = req.params.title, author = req.params.author;
 
-    let queryString = 'SELECT * FROM synopsis WHERE book_author LIKE ? AND book_title LIKE ?';
+    connection.query(process.env.SELECT_JOIN_BOOKS_SYNOPSIS,[title, author], (err, rows, fields)=>{
+        if (err) errMessage('failed to query synopsis', err);
 
-    connection.query(queryString,[author, title], (err, rows, fields)=>{
-        if(err){
-            console.log('failed to query synopsis' + err)
-            res.sendStatus(500);
-            // throw err (can do this istead)
-            res.end();
-            return
-        }
-
-        console.log(rows[0].synopsis_author)
         let synopsis = rows.map(syn=>{
             if(syn.book_title===title && syn.book_author===author){
                 return syn;
@@ -93,50 +56,39 @@ router.get('/:title&:author',(req,res)=>{
         res.render('synopsis/show', {synopsis});
     });
 });
-/*************************** INSERT ******************************************/
+
+/*************************** INSERT ******************************************
+******************************************************************************/
+
+/********* CREATE SYNOPSIS *********/
 router.get('/create', (req, res) => res.render('synopsis/create'));
 
-/**** CREATE IF AUTHOR UNKNOWN *****/
-router.post('/', (req, res) => {
-    let title = req.body.book_title;
-    let author = req.body.book_author
-    let synopsis_author = req.body.synopsis_author;
-    let synopsis_text = req.body.synopsis_text;
-    
+// /**** CREATE IF AUTHOR UNKNOWN *****/
+// router.post('/', (req, res) => {
+//     let title = req.body.book_title, author = req.body.book_author, 
+//                 synopsis_author = req.body.synopsis_author, synopsis_text = req.body.synopsis_text;
 
-  
+//     connection.query(process.env.INSERT_SYNOPSIS, [title, author, synopsis_author, synopsis_text], (err, results, fields) => {
+//         if (err) errMessage('Failed to input new synopsis.',err)
+//         console.log('Inserted a new synopsis ' + results.insertId);
+//         res.redirect('/synopsis');
+//     });
+// });
 
-    let queryString = 'INSERT INTO synopsis (book_title,book_author, synopsis_author, synopsis_text, submit_date) VALUES (?,?,?,?,CURRENT_TIMESTAMP)';
-    connection.query(queryString, [title, author, synopsis_author, synopsis_text], (err, results, fields) => {
-        if (err) {
-            console.log('Failed to input new synopsis.'+err);
-            res.sendStatus(500);
-            return
-        }
-        console.log('Inserted a new synopsis ' + results.insertId);
-        res.redirect('/synopsis');
-    })
-});
-
-router.get('/:title&:author/create', middleware.isLoggedIn, (req, res) => res.render('synopsis/create',{title:req.params.title,author:req.params.author, synopsis_author:req.session.username}));
+router.get('/:title&:author/create', middleware.isLoggedIn, (req, res) => 
+    res.render('synopsis/create',{title:req.params.title,author:req.params.author, synopsis_author:req.session.username
+}));
 
 /**** CREATE IF AUTHOR KNOWN ****
  * Access from /books route
  * Will automatically fill author and title
 */
 router.post('/:title&:author', (req, res) => {
-    let title = req.params.title;
-    let author = req.params.author;
-    let synopsis_author = req.body.synopsis_author;
-    let synopsis_text = req.body.synopsis_text;
+    let title = req.params.title, author = req.params.author,
+                synopsis_author = req.body.synopsis_author, synopsis_text = req.body.synopsis_text;
 
-    let queryString = 'INSERT INTO synopsis (book_title,book_author, synopsis_author, synopsis_text, submit_date) VALUES (?,?,?,?,CURRENT_TIMESTAMP)';
-    connection.query(queryString, [title, author, synopsis_author, synopsis_text], (err, results, fields) => {
-        if (err) {
-            console.log('Failed to input new synopsis.' + err);
-            res.sendStatus(500);
-            return
-        }
+    connection.query(process.env.INSERT_SYNOPSIS, [title, author, synopsis_author, synopsis_text], (err, results, fields) => {
+        if (err) errMessage('Failed to input new synopsis.',err)
         console.log('Inserted a new synopsis ' + results.insertId);
         res.redirect(`/synopsis/${title}&${author}`);
     })
