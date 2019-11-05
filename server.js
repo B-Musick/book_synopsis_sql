@@ -14,6 +14,7 @@ let express = require('express'),
 let bookRoutes = require('./routes/books');
 let synopsisRoutes = require('./routes/synopsis');
 let loginRoutes     = require('./routes/login');
+let searchRoutes    = require('./routes/search')
 
 // Set up the .env file to access through process.env.VALUE
 dotenv.config();
@@ -45,6 +46,7 @@ app.use(methodOverride('_method'));
 app.use('/books', bookRoutes);
 app.use('/synopsis', synopsisRoutes);
 app.use('/', loginRoutes)
+app.use('/search', searchRoutes)
 
 
 // /************************** CREATE DATABASE  *********************************/

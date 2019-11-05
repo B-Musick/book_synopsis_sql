@@ -35,9 +35,15 @@ router.post('/authorize', (req,res)=>{
                 req.session.username = username;
                 console.log('User logged in');
                 res.redirect('/');
-            }else res.send('Incorrect username or password.'); res.end();
+            }else{
+                res.send('Incorrect username or password.'); 
+                res.end();
+            }
         });
-    }else res.send('Please enter username and password.'); res.end();
+    }else{
+        res.send('Please enter username and password.'); 
+        res.end();
+    }
 });
 
 module.exports = router;

@@ -11,10 +11,26 @@
         <!-- Links to the form where author and title are automatic values -->
         <!-- <a href="/synopsis/<%=synopsis[0].book_title%>&<%=synopsis[0].book_author%>/create">Write A Synopsis</a> -->
 
+        <!-- SIDEBAR -->
         <div id="synopsis-previews-nav-container">
             <div id="synopsis-preview-left-column">
-                <% include ../partials/sidebar %>
+                <div id="i-books-left-column">
+                    <nav id="i-books-left-column-nav">
+                        <ul>
+                            <a href="/search">
+                                <div class="i-books-left-column-nav-div">FIND BOOK</div>
+                            </a>
+                            <a href="/books/create">
+                                <div class="i-books-left-column-nav-div">ADD BOOK</div>
+                            </a>
+                            <a href="/synopsis/<%=synopsis[0].book_title%>&<%=synopsis[0].book_author%>/create">
+                                <div class="i-books-left-column-nav-div">WRITE SYNOPSIS</div>
+                            </a>
+                        </ul>
+                    </nav>
+                </div>
             </div>
+            
             <div id="synopsis-previews-container">
                 <%synopsis.forEach(syn=>{%>
                 <div id="synopsis-preview">

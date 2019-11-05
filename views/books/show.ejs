@@ -1,49 +1,52 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title></title>
-</head>
-<body>
-    <%if(book.length>1){%>
-        <div><%=book[0].author%></div>
-        <div><%=book[0].title%></div>
-        
-        <img src='<%=book[0].Image%>'></img>
-        <div>SYNOPSIS</div>
-        <div><%=book.synopsis_author%></div>
-        <div>
-            <%book.forEach(syn=>{%>
+<% include ../partials/header %>
+<div id="synopsis-body">
+    <div id="synopsis-title-container">
+        <img id="synopsis-book-image" src="<%=book[0].Image%>" alt="">
+        <div id="synopsis-title">
+            <h2><%=book[0].title%></h2>
+            <h2><%=book[0].author%></h2>
+        </div>
+    </div>
+
+    <div id="synopsis-previews-nav-container">
+        <div id="i-books-left-column">
+            <nav id="i-books-left-column-nav">
+                <ul>
+                    <a href="/search">
+                        <div class="i-books-left-column-nav-div">FIND BOOK</div>
+                    </a>
+                    <a href="/books/create">
+                        <div class="i-books-left-column-nav-div">ADD BOOK</div>
+                    </a>
+                    <a href="/books/search">
+                        <!-- If try to write synopsis from here then send to search page -->
+                        <div class="i-books-left-column-nav-div">WRITE SYNOPSIS</div>
+                    </a>
+                </ul>
+            </nav>
+
+        </div>
+
+        <!-- Once have a rating system, only show the top synopsis as the main body -->
+
+
+        <div id="synopsis-previews-container">
+            <div>SYNOPSIS</div>
+            <div><%=book[0].synopsis_text%></div>
             <div>
-                <h5><%=syn.synopsis_author%></h5>
-                <p><%=syn.synopsis_text%></p>
+                <%=book[0].synopsis_author%>
             </div>
+            <a href="/synopsis/<%=book[0].title%>&<%=book[0].author%>/create">Write A Synopsis</a>
+            <%if(username==='brendanmusick'){%>
+                <a href="/books/<%=book[0].title%>&<%=book[0].author%>/update">UPDATE</a>
+                <form action="/books/<%=book[0].title%>&<%=book[0].author%>?_method=DELETE" method="POST">
+                    <input type="submit" value="DELETE">
+                </form>
+            <%};%>
         
-            <%})%>
+        </div>
         </div>
         
-        <a href="/books/<%=book[0].title%>&<%=book[0].author%>/update">UPDATE</a>
-        <form action="/books/<%=book[0].title%>&<%=book[0].author%>?_method=DELETE" method="POST">
-            <input type="submit" value="DELETE">
-        </form>
-        <a href="/synopsis/<%=book[0].title%>&<%=book[0].author%>/create">Write A Synopsis</a>
-    <%}else{%>
-        <div><%=book[0].author%></div>
-        <div><%=book[0].title%></div>
-        
-        <img src='<%=book[0].Image%>'></img>
-        
-        <a href="/books/<%=book[0].title%>&<%=book[0].author%>/update">UPDATE</a>
-        <form action="/books/<%=book[0].title%>&<%=book[0].author%>?_method=DELETE" method="POST">
-            <input type="submit" value="DELETE">
-        </form>
-        <a href="/synopsis/<%=book[0].title%>&<%=book[0].author%>/create">Write A Synopsis</a>
+    </div>
 
-    
-    <%}%>
-
-
-</body>
-</html>
+<% include ../partials/footer %>

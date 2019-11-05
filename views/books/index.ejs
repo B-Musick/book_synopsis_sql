@@ -1,7 +1,22 @@
 <% include ../partials/header %>
     <div id="books-grid-container">
         
-        <% include ../partials/sidebar %>
+        <div id="i-books-left-column">
+            <nav id="i-books-left-column-nav">
+                <ul>
+                    <a href="/books/search">
+                        <div class="i-books-left-column-nav-div">FIND BOOK</div>
+                    </a>
+                    <a href="/books/create">
+                        <div class="i-books-left-column-nav-div">ADD BOOK</div>
+                    </a>
+                    <a href="/books/search">
+                        <!-- If try to write synopsis from here then send to search page -->
+                        <div class="i-books-left-column-nav-div">WRITE SYNOPSIS</div>
+                    </a>
+                </ul>
+            </nav>
+        </div>
         
         <div id="i-books-container">
             <% books.forEach(book=>{ %>               

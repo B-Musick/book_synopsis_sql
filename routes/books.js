@@ -47,6 +47,7 @@ makeSelectQuery = (queryString, queryVariables, res, connection, route) => {
 router.get('/', (req, res) => { makeSelectQuery(process.env.SELECT_BOOKS, [], res, connection, 'books/index');});
 
 /********** GET INDIVIDUAL BOOK ************/
+/***** UPDATE - Will need to fix what is input to the route when add rating system, only want highest rated to show so need to order the query from SQL */
 router.get('/:title&:author', (req, res) => {
     /* Join in the values from synopsis table so we can print previews of them in the Books show page then the 
     user can access them from there */
@@ -62,7 +63,7 @@ router.get('/:title&:author', (req, res) => {
 
         // Need to access book[0] to get the title, author, image
         // Then to access synopsis, need to book.forEach and take the synopsis values
-        res.render('books/show', { book });
+        res.render('books/show', { book, username: req.session.username ? req.session.username: false });
     })
 });
 
