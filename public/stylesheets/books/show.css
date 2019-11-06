@@ -31,6 +31,7 @@
 #books-previews-container{
     /* Full container containing all the synopsis for the books */
     height: 100%;
+    width: 80%;
     display: flex;
     flex-wrap: wrap;
     flex-direction: column;
@@ -118,9 +119,10 @@ button{
         display: block;
         position: absolute;
         align-self: flex-end;
-        margin-top: 40px;
-        left: 20px;
+        margin-top: 60px;
+        left:0;
         padding: 10px;
+        
         background-color: brown;
 
     }

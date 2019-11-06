@@ -16,7 +16,7 @@ body{
 #title-header-background{
     z-index: 1000;
     height: 100px;
-    width: 100vw;
+    width: 100%;
     opacity: 0.5;
     /* font-size: 20px; */
     background-image: url('https://images.unsplash.com/photo-1526721940322-10fb6e3ae94a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1051&q=80');
@@ -37,6 +37,7 @@ body{
     text-align: center;   
 }
 #navigation-bar{
+    width: 100%;
     height: 40px;
     display: flex;
     justify-content: space-evenly;
@@ -44,14 +45,21 @@ body{
     color: white;
     align-content: center;
 }
-
+#nav-bar-items{
+    /* This will be foldable when screen is less than 635px */
+    width: 100%;
+    height: 40px;
+    display: flex;
+    justify-content: space-evenly;
+    background-color: rgb(48, 95, 152);
+    color: white;
+    align-content: center;
+}
 #navigation-bar a{
-    
-    
-    margin-left: 20px;
-    margin: 0;
-    
-    padding:10px 10vw;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 a:hover{
@@ -74,8 +82,46 @@ a:hover{
 
 }
 
+#fold-down-menu-icon-nav{
+    display:none;
+}
 /**************************** IPAD/ MOBILE *************************************/
 @media(max-width: 635px){
+    #header-word-title{
+        /* Need font to shrink as view width shrinks */
+        font-size: 9vw;
+    }
 
+    #navigation-bar{
+        /* Dont want the icon to be in the center of the nav bar */
+        display: block;
+    }
+    /************ FOLDING MENU *************/
+    #fold-down-menu-icon-nav{
+        display: block;
+        padding: 11px;
+        width: 15px;
+    }
+     #fold-down-menu-icon-nav:hover{
+         filter: brightness(125%);
+         background-color: rgb(102, 151, 211);
+     }
+     #nav-bar-items a{
+        padding: 10px;
+        width: 110px;
+        margin-left: 0 !important;
+        
+     }
+     .nav-link{
+         /* padding: 5px; */
+         width: 100%;
+     }
+    #nav-bar-items{
+        /* Toggle display on to block to show the menu (hearder.js)*/
+        display: none;
+        float: left;
+        width: 120px;
+        position: fixed;
+    }
 
 }
