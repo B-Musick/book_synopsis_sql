@@ -1,0 +1,79 @@
+#search-page-container{
+    display: flex;
+    justify-content: center;
+    /* Had to do this since flex-wrap wasnt working */
+    flex-direction: column;
+    align-items: center;
+}
+
+h2{
+    text-transform: uppercase;
+}
+/******************************** SEARCH FORM *********************************/
+#search-form-container{
+    display: flex;
+    justify-content: center;
+    /* Had to do this since flex-wrap wasnt working */
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 30px
+}
+
+input:focus{
+    /* Remove highlight border when inputting */
+    outline: none;
+}
+
+#search-form-input{
+    border: 2px solid brown;
+    padding: 4px;
+    font-size: 15px;
+    height: 20px;
+    width: 200px;
+    /* float-left so button overlaps with searchbar */
+    float: left;
+
+}
+#search-form-submit-button{
+    border: 1px solid brown;
+    background-color: brown;
+    color: white;
+    height: 32px;
+    width: 50px;
+}
+
+button:hover{
+    filter: brightness(125%)
+}
+
+/******************************* SEARCH RESULTS *******************************/
+
+#search-results-container a{
+    text-decoration: none;
+    color: white;
+}
+
+.search-result-instance{
+    padding: 20px;
+    margin: 20px 0;
+    background-color: brown;
+    width: 300px;
+    display: grid;
+    grid-template-columns: 30% 70%;
+}
+
+.search-book-text-column{
+    grid-column: 2/3;
+}
+
+.search-book-image-column{
+    grid-column: 1/2;
+
+}
+
+.search-book-title{
+    margin-bottom: 20px;
+}
+.search-book-image{
+    width: 40px;
+}

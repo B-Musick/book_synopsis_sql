@@ -1,13 +1,30 @@
 <% include ./partials/header %>
-    <p>Search For a Book</p>
-    <form action="/search" method="POST">
-        <input type="text" name="query" placeholder="Enter a title or author name">
-        <button>Submit</button>
-    </form>
-    <%if(books){%>
-        <%books.forEach(book=>{%>
-            <div><%=book.title%></div>
-        <%})%>
-    <%}%>
-
+    <div id="search-page-container">       
+        <div id="search-form-container">
+            <h2>Search For a Book</h2>
+            <div>
+            <form id="search-form" action="/search" method="POST">
+                <input id="search-form-input" type="text" name="query" placeholder="Enter a title or author name...">
+                <button id="search-form-submit-button"><i class="fa fa-search"></i></button>          
+            </form>
+            </div>
+        </div>
+        <div id="search-results-container">
+            <%if(books){%>
+                <%books.forEach(book=>{%>
+                    <a href="/books/<%=book.title%>&<%=book.author%>">
+                        <div class='search-result-instance'>
+                            <div class="search-book-image-column">
+                                <img src="<%=book.image%>" class="search-book-image">
+                            </div>
+                            <div id="search-book-text-column">
+                                <div class="search-book-title"><%=book.title%></div>
+                                <div class="search-book-author"><%=book.author%></div>
+                            </div>
+                        </div>
+                     </a>
+                <%})%>
+            <%}%>
+        </div>
+    </div>
 <% include ./partials/footer %>
