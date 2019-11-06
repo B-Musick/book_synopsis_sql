@@ -1,8 +1,4 @@
-body{
-    width: 100vw;
-    height: 100vh;
- 
-}
+
 #books-grid-container{
     display: grid;
     grid-template-columns: 15% 85%;
