@@ -5,13 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <link rel="stylesheet" href="/stylesheets/user/login.css">
 </head>
 <body>
-    <form action="/authorize" method="POST">
-        <input type="text" name="username" placeholder="Username">
-        <input type="text" name="password" placeholder="Password">
-        <input type="email" name="email" placeholder="Email">
-        <button>Submit</button>
-    </form>
+    <div id="login-form-container">
+        <form action="/authorize" method="POST">
+            <div class="login-input">
+                <label for="username">Username: </label>
+                <input type="text" name="username" placeholder="Username..." required>
+            </div>
+            <hr>
+    
+            <div class="login-input">
+                <label for="password">Password:</label>
+                <input type="text" name="password" placeholder="Password..." required>
+            </div>   
+            <div id="login-button">
+                <button>Submit</button>
+            </div>   
+        </form>
+    </div>
 </body>
 </html>
