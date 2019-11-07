@@ -20,6 +20,24 @@ connection.query(process.env.CREATE_TABLE_USERS, (err, result) => { if (err) thr
 // connection.query(process.env.INSERT_USER, (err, results) => {if(err) throw err; console.log('Altered superuser')}); 
 *********/
 
+
+/************* REGISTER GET ROUTE **************/
+router.get('/register', (req, res) => { res.render('register') });
+
+/*********** REGISTER POST (INSERT) ROUTE ************/
+
+router.post('/register', (req, res) => {
+    let username = req.body.username, password = req.body.password, email = req.body.email;
+ 
+        connection.query(process.env.INSERT_USERNAME_PASSWORD, [username, password, email], (err, results, fields) => {
+            if(err) errMessage('User could not be created: '+err)
+            else{
+                console.log(results+' user was created');
+                res.redirect('/books')
+            }
+ 
+})});
+
 /************* LOGIN ROUTE **************/
 router.get('/login',(req,res)=>{ res.render('login')});
 
@@ -31,6 +49,7 @@ router.post('/authorize', (req,res)=>{
     if(username && password){
         connection.query(process.env.SELECT_USERNAME_PASSWORD, [username,password], (err, results, fields)=>{
             if(results.length > 0){
+                console.log(results)
                 req.session.loggedin = true;
                 req.session.username = username;
                 console.log('User logged in');

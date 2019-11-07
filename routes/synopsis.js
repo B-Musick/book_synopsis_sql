@@ -89,7 +89,7 @@ router.post('/:title&:author', (req, res) => {
 
     connection.query(process.env.INSERT_SYNOPSIS, [title, author, synopsis_author, synopsis_text], (err, results, fields) => {
         if (err) errMessage('Failed to input new synopsis.',err)
-        console.log('Inserted a new synopsis ' + results.insertId);
+        console.log('Inserted a new synopsis ' + results.insertId + results.id);
         res.redirect(`/synopsis/${title}&${author}`);
     })
 });
